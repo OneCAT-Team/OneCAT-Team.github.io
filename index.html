@@ -1,0 +1,868 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>OneCAT: The Unified Multimodal Model</title>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="styles.css">
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+
+        body {
+            font-family: 'Inter', sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #FF8C00 0%, #cc7000 100%);
+            min-height: 100vh;
+        }
+
+        .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
+        header { padding: 2rem 0; text-align: center; color: white; }
+        .logo { width: 80px; height: 80px; margin: 0 auto 1rem; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; }
+        h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(45deg, rgba(255,140,0,0.22), rgba(255,140,0,0.06)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        .subtitle { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
+        .release-date { font-size: 0.9rem; opacity: 0.8; margin-bottom: 2rem; }
+        .authors { font-size: 1rem; margin-bottom: 2rem; opacity: 0.9; }
+
+        .links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
+        .link-btn { padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; backdrop-filter: blur(10px); }
+        .link-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+
+        .main-content { background: white; border-radius: 20px 20px 0 0; box-shadow: 0 -10px 50px rgba(0,0,0,0.1); padding: 3rem 0; margin-top: 2rem; }
+        .intro { text-align: center; margin-bottom: 4rem; padding: 0 2rem; }
+        .intro p { font-size: 1.1rem; color: #666; max-width: 800px; margin: 0 auto; }
+        .section { margin-bottom: 4rem; padding: 0 2rem; }
+        .section h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 2rem; text-align: center; color: #333; }
+
+        .architecture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .feature-card { background: #f8fafc; padding: 2rem; border-radius: 12px; border-left: 4px solid #FF8C00; }
+        .feature-card h3 { color: #FF8C00; margin-bottom: 1rem; font-size: 1.3rem; }
+        .feature-card p { color: #666; line-height: 1.6; }
+
+        .benchmark-table { overflow-x: auto; margin-bottom: 2rem; }
+        table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th { background: #ffffff; font-weight: 600; color: #374151; }
+        thead th { border-bottom: 4px solid #d1d5db; }
+
+        .highlight { background: linear-gradient(45deg, #FF8C00, #cc7000); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; }
+        .table-subtitle { text-align: center; color: #6b7280; font-size: 0.95rem; margin-bottom: 0.5rem; }
+        .best { font-weight: 700; }
+        .second { text-decoration: underline; text-underline-offset: 2px; }
+
+        .image-showcase { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
+        .showcase-item { background: #f8fafc; border-radius: 12px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
+        .showcase-item img { width: 100%; height: 200px; object-fit: cover; }
+        .showcase-content { padding: 1.5rem; }
+        .showcase-content h4 { color: #333; margin-bottom: 0.5rem; }
+        .showcase-content p { color: #666; font-size: 0.9rem; }
+
+        footer { background: #1f2937; color: white; text-align: center; padding: 2rem 0; }
+        .training-pipeline { background: #f8fafc; padding: 2rem; border-radius: 12px; margin-bottom: 2rem; }
+        .pipeline-stage { margin-bottom: 1.5rem; padding: 1rem; background: white; border-radius: 8px; border-left: 4px solid #FF8C00; }
+        .pipeline-stage h4 { color: #1f2937; font-weight: 700; margin-bottom: 0.5rem; }
+        .pipeline-stage p { color: #374151; }
+
+        @media (max-width: 768px) {
+            h1 { font-size: 2.5rem; }
+            .links { flex-direction: column; align-items: center; }
+            .section { padding: 0 1rem; }
+            .intro { padding: 0 1rem; }
+        }
+
+    /* Figure embeds */
+    .architecture-figure { background: #f8fafc; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.06); margin-top: 1rem; }
+    .architecture-figure .embed { width: 100%; height: auto; border: none; border-radius: 8px; background: #ffffff; display: block; }
+    .architecture-figure .caption { text-align: center; font-size: 0.9rem; color: #6b7280; margin-top: 0.5rem; }
+    .training-figure { background: #f8fafc; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.06); margin: 1rem 0; }
+    .training-figure .embed { width: 100%; height: auto; border: none; border-radius: 8px; background: #ffffff; display: block; }
+    .training-figure .caption { text-align: center; font-size: 0.9rem; color: #6b7280; margin-top: 0.5rem; }
+    </style>
+</head>
+<body>
+    <header>
+        <div class="container">
+            <h1 style="color: white; background: none; -webkit-text-fill-color: white;">OneCAT</h1>
+            <p class="subtitle">Decoder-Only Auto-Regressive Model for Unified Understanding and Generation</p>
+            <p class="release-date">Released on Sep 2025</p>
+            <p class="authors">
+                Han Li*, Xinyu Peng*, Yaoming Wang†, Zelin Peng, Xin Chen,<br>
+                Rongxiang Weng, Jingang Wang, Xunliang Cai, Wenrui Dai, Hongkai Xiong<br>
+                <small>*Equal contribution, †Project lead</small>
+            </p>
+            <div class="links">
+                <a href="https://github.com/onecat-ai/onecat" class="link-btn">GitHub</a>
+                <a href="https://huggingface.co/onecat-ai" class="link-btn">HuggingFace</a>
+                <a href="/home/xinyu_peng/workspace/onecat-page/arXiv-2505.14683v3/main.tex" class="link-btn">Paper</a>
+            </div>
+        </div>
+    </header>
+
+    <main class="main-content">
+        <div class="container">
+            <section class="intro">
+                <p>
+                    We introduce <strong>OneCAT</strong>, the open-source unified multimodal model that seamlessly integrates understanding, generation, and editing within a novel, pure decoder-only transformer architecture. Our framework uniquely eliminates the need for external components such as Vision Transformers (ViT) or Visual Tokenizer during inference, leading to significant efficiency gains and setting a new performance standard for unified multimodal intelligence.
+                </p>
+            </section>
+
+            <section class="section" id="architecture">
+                <h2>Architecture</h2>
+                <div class="architecture-grid">
+                    <div class="feature-card">
+                        <h3>🧠 Pure Decoder-Only Design</h3>
+                        <p>Eliminates external vision encoders and VAE tokenizers during inference, using only a lightweight patch embedding layer for raw image processing.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>⚡ Mixture-of-Experts (MoE)</h3>
+                        <p>Three specialized FFN experts: Text FFN for language comprehension, Understanding FFN for visual tokens, and Generation FFN for image synthesis.</p>
+                    </div>
+                    <div class="feature-card">
+                        <h3>🎯 Multi-Scale Autoregressive</h3>
+                        <p>Pioneer Next Scale Prediction paradigm that generates images coarse-to-fine, drastically reducing generation steps compared to diffusion models.</p>
+                    </div>
+                </div>
+                <div class="architecture-figure">
+                    <img class="embed" src="assets/arch.png" alt="OneCAT unified architecture overview">
+                    <div class="caption">OneCAT unified architecture overview.</div>
+                </div>
+            </section>
+
+            <section class="section" id="training">
+                <h2>Training Pipeline</h2>
+                <div class="training-figure">
+                    <img class="embed" src="assets/train-stages.png" alt="OneCAT training stages overview">
+                    <div class="caption">Training stages overview.</div>
+                </div>
+                <div class="training-pipeline">
+                    <div class="pipeline-stage">
+                        <h4>Stage 1: Separate Pretraining</h4>
+                        <p><strong>Understanding Distillation:</strong> 436M image-text pairs with teacher-student distillation using InterViT teacher model</p>
+                        <p><strong>Generation Pretraining:</strong> 51M text-to-image samples with Next-Scale Prediction loss</p>
+                    </div>
+                    <div class="pipeline-stage">
+                        <h4>Stage 2: Unified Mid-Training</h4>
+                        <p>Unified training across all tasks with Scale-Aware Adapter integration. Native resolution strategy for both understanding and generation with dynamic aspect ratios.</p>
+                    </div>
+                    <div class="pipeline-stage">
+                        <h4>Stage 3: Supervised Fine-Tuning</h4>
+                        <p>High-quality instruction-following data with expanded generation resolution support (288-1728 pixels)</p>
+                    </div>
+                </div>
+            </section>
+
+            <!-- <section class="section" id="demo">
+                <h2>Model Showcase</h2>
+                <div class="image-showcase">
+                    <div class="showcase-item">
+                        <div class="showcase-content">
+                            <h4>🎨 Text-to-Image Generation</h4>
+                            <p>High-quality image synthesis with precise control over style, composition, and details. Our multi-scale autoregressive approach enables efficient generation at various resolutions.</p>
+                            <div class="code-block">
+                                <span class="keyword">Input:</span> <span class="string">"A majestic lion standing on a cliff overlooking a vast savanna at sunset"</span>
+                                <span class="keyword">Output:</span> <span class="comment"># Generated high-quality image</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-content">
+                            <h4>✏️ Image Editing</h4>
+                            <p>Seamless object removal, background adjustment, color modification, and style transfer. Our unified architecture enables complex editing operations without additional components.</p>
+                            <div class="code-block">
+                                <span class="keyword">Input:</span> <span class="string">"Remove the red car from the image"</span>
+                                <span class="keyword">Reference:</span> <span class="comment"># Original image with red car</span>
+                                <span class="keyword">Output:</span> <span class="comment"># Edited image without red car</span>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="showcase-item">
+                        <div class="showcase-content">
+                            <h4>🧠 Multimodal Understanding</h4>
+                            <p>Advanced visual question answering, OCR, chart analysis, and multimodal reasoning across diverse domains including STEM problem-solving.</p>
+                            <div class="code-block">
+                                <span class="keyword">Question:</span> <span class="string">"What is the main trend shown in this chart?"</span>
+                                <span class="keyword">Image:</span> <span class="comment"># Bar chart with data</span>
+                                <span class="keyword">Answer:</span> <span class="string">"The chart shows a steady increase..."</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </section> -->
+
+            <section class="section" id="understanding">
+                <h2>Multimodal Understanding</h2>
+                <div class="benchmark-table">
+                    <div class="table-subtitle">Higher is better. Best in <strong>bold</strong>, second-best <u>underlined</u>.</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>A-LLM</th>
+                                <th>Vis.</th>
+                                <th>MME-P ↑</th>
+                                <th>MME-S ↑</th>
+                                <th>MMBench ↑</th>
+                                <th>MMMU ↑</th>
+                                <th>MM-Vet ↑</th>
+                                <th>MathVista ↑</th>
+                                <th>SEED ↑</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr><td colspan="10"><i>Encoder-based Understanding Only Models</i></td></tr>
+                            <tr>
+                                <td>InternVL2</td>
+                                <td>1.8B</td>
+                                <td>0.3B</td>
+                                <td>1440</td>
+                                <td>1877</td>
+                                <td>73.2</td>
+                                <td>34.3</td>
+                                <td>44.6</td>
+                                <td>46.4</td>
+                                <td>71.6</td>
+                            </tr>
+                            <tr>
+                                <td>InternVL2.5</td>
+                                <td>1.8B</td>
+                                <td>0.3B</td>
+                                <td>—</td>
+                                <td>2138</td>
+                                <td>74.7</td>
+                                <td>43.6</td>
+                                <td>60.8</td>
+                                <td>51.3</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Qwen2-VL</td>
+                                <td>1.5B</td>
+                                <td>0.6B</td>
+                                <td>—</td>
+                                <td>1872</td>
+                                <td>74.9</td>
+                                <td>41.1</td>
+                                <td>49.5</td>
+                                <td>43.0</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Qwen2.5-VL</td>
+                                <td>3B</td>
+                                <td>0.6B</td>
+                                <td>—</td>
+                                <td>2157</td>
+                                <td>79.1</td>
+                                <td>53.1</td>
+                                <td>61.8</td>
+                                <td>62.3</td>
+                                <td>—</td>
+                            </tr>
+                            <tr><td colspan="10"><i>Encoder-free Understanding Only Models</i></td></tr>
+                            <tr>
+                                <td>Mono-InternVL</td>
+                                <td>1.8B</td>
+                                <td>/</td>
+                                <td>—</td>
+                                <td>1875</td>
+                                <td>65.5</td>
+                                <td>33.7</td>
+                                <td>40.1</td>
+                                <td>45.7</td>
+                                <td>67.4</td>
+                            </tr>
+                            <tr>
+                                <td>EvE</td>
+                                <td>7B</td>
+                                <td>/</td>
+                                <td>—</td>
+                                <td>1628</td>
+                                <td>52.3</td>
+                                <td>32.6</td>
+                                <td>25.7</td>
+                                <td>—</td>
+                                <td>64.6</td>
+                            </tr>
+                            <tr>
+                                <td>EvEv2.0</td>
+                                <td>7B</td>
+                                <td>/</td>
+                                <td>—</td>
+                                <td>1709</td>
+                                <td>66.3</td>
+                                <td>39.3</td>
+                                <td>45.0</td>
+                                <td>—</td>
+                                <td>71.4</td>
+                            </tr>
+                            <tr>
+                                <td>HoVLE</td>
+                                <td>2.6B</td>
+                                <td>/</td>
+                                <td>—</td>
+                                <td>1864</td>
+                                <td>71.9</td>
+                                <td>33.7</td>
+                                <td>44.3</td>
+                                <td>46.2</td>
+                                <td>70.7</td>
+                            </tr>
+                            <tr><td colspan="10"><i>Unified Models</i></td></tr>
+                            <tr>
+                                <td>Chameleon</td>
+                                <td>7B</td>
+                                <td>-</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>35.7</td>
+                                <td>28.4</td>
+                                <td>8.3</td>
+                                <td>—</td>
+                                <td>30.6</td>
+                            </tr>
+                            <tr>
+                                <td>Emu3</td>
+                                <td>8B</td>
+                                <td>0.3B</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>58.5</td>
+                                <td>31.6</td>
+                                <td>37.2</td>
+                                <td>—</td>
+                                <td>68.2</td>
+                            </tr>
+                            <tr>
+                                <td>Harmon</td>
+                                <td>1.5B</td>
+                                <td>0.9B</td>
+                                <td>1155</td>
+                                <td>1476</td>
+                                <td>65.5</td>
+                                <td>38.9</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>67.1</td>
+                            </tr>
+                            <tr>
+                                <td>Show-o2 (1.5B)</td>
+                                <td>1.5B</td>
+                                <td>0.1B</td>
+                                <td>1450</td>
+                                <td>—</td>
+                                <td>67.4</td>
+                                <td>37.1</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Janus-Pro (1.5B)</td>
+                                <td>1.5B</td>
+                                <td>0.3B</td>
+                                <td>1444</td>
+                                <td>—</td>
+                                <td>75.5</td>
+                                <td>36.3</td>
+                                <td>39.8</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-1.5B</td>
+                                <td>1.5B</td>
+                                <td>/</td>
+                                <td>1509</td>
+                                <td>1893</td>
+                                <td>72.4</td>
+                                <td>39.0</td>
+                                <td>42.4</td>
+                                <td>55.6</td>
+                                <td>70.9</td>
+                            </tr>
+                            <tr>
+                                <td>ILLUME+</td>
+                                <td>3B</td>
+                                <td>0.6B</td>
+                                <td>1414</td>
+                                <td>—</td>
+                                <td>80.8</td>
+                                <td>44.3</td>
+                                <td>40.3</td>
+                                <td>—</td>
+                                <td>73.3</td>
+                            </tr>
+                            <tr>
+                                <td>VILA-U</td>
+                                <td>7B</td>
+                                <td>0.4B</td>
+                                <td>1401</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>33.5</td>
+                                <td>—</td>
+                                <td>59.0</td>
+                            </tr>
+                            <tr>
+                                <td>Janus-Pro (7B)</td>
+                                <td>7B</td>
+                                <td>0.3B</td>
+                                <td>1567</td>
+                                <td>—</td>
+                                <td>79.2</td>
+                                <td>41.0</td>
+                                <td>50.0</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Tar</td>
+                                <td>7B</td>
+                                <td>0.4B</td>
+                                <td>1571</td>
+                                <td>1926</td>
+                                <td>74.4</td>
+                                <td>39.0</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>—</td>
+                            </tr>
+                            <tr>
+                                <td>Show-o2 (7B)</td>
+                                <td>7B</td>
+                                <td>0.1B</td>
+                                <td>1620</td>
+                                <td>—</td>
+                                <td>79.3</td>
+                                <td>48.9</td>
+                                <td>—</td>
+                                <td>—</td>
+                                <td>69.8</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>3B</td>
+                                <td>/</td>
+                                <td>1630</td>
+                                <td>2051</td>
+                                <td>78.8</td>
+                                <td>41.9</td>
+                                <td>52.2</td>
+                                <td>61.7</td>
+                                <td>72.5</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+            <section class="section" id="generation">
+                <h2>Text-to-Image Generation</h2>
+                <div class="benchmark-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Params</th>
+                                <th>GenEval Overall</th>
+                                <th>DPG-Bench Overall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Emu3-8B</td>
+                                <td>8B</td>
+                                <td>0.66</td>
+                                <td>81.60</td>
+                            </tr>
+                            <tr>
+                                <td>Janus-Pro-7B</td>
+                                <td>7B</td>
+                                <td>0.80</td>
+                                <td>84.19</td>
+                            </tr>
+                            <tr>
+                                <td>Mogao-7B</td>
+                                <td>7B</td>
+                                <td><u>0.89</u></td>
+                                <td>84.33</td>
+                            </tr>
+                            <tr>
+                                <td>BAGEL-7B</td>
+                                <td>7B</td>
+                                <td>0.82</td>
+                                <td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>BAGEL-7B†</td>
+                                <td>7B</td>
+                                <td>0.88</td>
+                                <td>&mdash;</td>
+                            </tr>
+                            <tr>
+                                <td>Show-o2-7B</td>
+                                <td>7B</td>
+                                <td>0.76</td>
+                                <td><strong>86.14</strong></td>
+                            </tr>
+                            <tr>
+                                <td>Tar-7B</td>
+                                <td>7B</td>
+                                <td>0.84</td>
+                                <td>84.19</td>
+                            </tr>
+                            <tr>
+                                <td>BLIP3-o-8B</td>
+                                <td>8B</td>
+                                <td>0.84</td>
+                                <td>81.60</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-1.5B</td>
+                                <td>1.5B</td>
+                                <td>0.85</td>
+                                <td>81.72</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>3B</td>
+                                <td><strong>0.90</strong></td>
+                                <td><u>84.53</u></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                    GenEval and DPG-Bench results from the paper. Best in bold, second underlined. † indicates prompt rewriting where applicable.
+                </p>
+            </section>
+
+            <section class="section" id="editing">
+                <h2>Image Editing</h2>
+                <div class="benchmark-table">
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Add</th>
+                                <th>Adjust</th>
+                                <th>Extract</th>
+                                <th>Replace</th>
+                                <th>Remove</th>
+                                <th>Background</th>
+                                <th>Style</th>
+                                <th>Hybrid</th>
+                                <th>Action</th>
+                                <th>Overall</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>MagicBrush</td>
+                                <td>2.84</td>
+                                <td>1.58</td>
+                                <td>1.51</td>
+                                <td>1.97</td>
+                                <td>1.58</td>
+                                <td>1.75</td>
+                                <td>2.38</td>
+                                <td>1.62</td>
+                                <td>1.22</td>
+                                <td>1.90</td>
+                            </tr>
+                            <tr>
+                                <td>Instruct-Pix2Pix</td>
+                                <td>2.45</td>
+                                <td>1.83</td>
+                                <td>1.44</td>
+                                <td>2.01</td>
+                                <td>1.50</td>
+                                <td>1.44</td>
+                                <td>3.55</td>
+                                <td>1.20</td>
+                                <td>1.46</td>
+                                <td>1.88</td>
+                            </tr>
+                            <tr>
+                                <td>AnyEdit</td>
+                                <td>3.18</td>
+                                <td>2.95</td>
+                                <td>1.88</td>
+                                <td>2.47</td>
+                                <td>2.23</td>
+                                <td>2.24</td>
+                                <td>2.85</td>
+                                <td>1.56</td>
+                                <td>2.65</td>
+                                <td>2.45</td>
+                            </tr>
+                            <tr>
+                                <td>UltraEdit</td>
+                                <td>3.44</td>
+                                <td>2.81</td>
+                                <td>2.13</td>
+                                <td>2.96</td>
+                                <td>1.45</td>
+                                <td>2.83</td>
+                                <td>3.76</td>
+                                <td>1.91</td>
+                                <td>2.98</td>
+                                <td>2.70</td>
+                            </tr>
+                            <tr>
+                                <td>Step1X-Edit</td>
+                                <td>3.88</td>
+                                <td>3.14</td>
+                                <td>1.76</td>
+                                <td>3.40</td>
+                                <td>2.41</td>
+                                <td>3.16</td>
+                                <td>4.63</td>
+                                <td>2.64</td>
+                                <td>2.52</td>
+                                <td>3.06</td>
+                            </tr>
+                            <tr>
+                                <td>ICEdit</td>
+                                <td>3.58</td>
+                                <td>3.39</td>
+                                <td>1.73</td>
+                                <td>3.15</td>
+                                <td>2.93</td>
+                                <td>3.08</td>
+                                <td>3.84</td>
+                                <td>2.04</td>
+                                <td>3.68</td>
+                                <td>3.05</td>
+                            </tr>
+                            <tr>
+                                <td>OmniGen</td>
+                                <td>3.47</td>
+                                <td>3.04</td>
+                                <td>1.71</td>
+                                <td>2.94</td>
+                                <td>2.43</td>
+                                <td>3.21</td>
+                                <td>4.19</td>
+                                <td>2.24</td>
+                                <td>3.38</td>
+                                <td>2.96</td>
+                            </tr>
+                            <tr>
+                                <td>OmniGen2</td>
+                                <td><u>3.57</u></td>
+                                <td>3.06</td>
+                                <td>1.77</td>
+                                <td><strong>3.74</strong></td>
+                                <td><u>3.20</u></td>
+                                <td><u>3.57</u></td>
+                                <td><strong>4.81</strong></td>
+                                <td><u>2.52</u></td>
+                                <td><strong>4.68</strong></td>
+                                <td><strong>3.44</strong></td>
+                            </tr>
+                            <tr>
+                                <td>BAGEL-7B</td>
+                                <td>3.56</td>
+                                <td>3.31</td>
+                                <td>1.70</td>
+                                <td>3.30</td>
+                                <td>2.62</td>
+                                <td>3.24</td>
+                                <td>4.49</td>
+                                <td>2.38</td>
+                                <td><u>4.17</u></td>
+                                <td>3.20</td>
+                            </tr>
+                            <tr>
+                                <td>UniWorld-V1-20B</td>
+                                <td><strong>3.82</strong></td>
+                                <td><u>3.64</u></td>
+                                <td><u>2.27</u></td>
+                                <td>3.47</td>
+                                <td><strong>3.24</strong></td>
+                                <td>2.99</td>
+                                <td>4.21</td>
+                                <td><strong>2.96</strong></td>
+                                <td>2.74</td>
+                                <td>3.26</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>3.65</td>
+                                <td><strong>3.70</strong></td>
+                                <td><strong>2.42</strong></td>
+                                <td><u>3.92</u></td>
+                                <td>3.00</td>
+                                <td><strong>3.79</strong></td>
+                                <td><u>4.61</u></td>
+                                <td>2.23</td>
+                                <td>3.53</td>
+                                <td><u>3.43</u></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                    ImgEdit-Bench categories (Add, Adjust, Extract, Replace, Remove, Background, Style, Hybrid, Action) from the paper. Best in bold, second underlined.
+                </p>
+            </section>
+
+            <section class="section" id="efficiency">
+                <h2>Efficiency Analysis</h2>
+                <div class="benchmark-table">
+                    <div class="table-subtitle">Efficiency comparison of OneCAT-3B and Qwen2.5-VL-3B (Prefilling)</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Resolution of Input Image</th>
+                                <th>#Text Tokens</th>
+                                <th>#Visual Tokens</th>
+                                <th>TTFT (s)</th>
+                                <th>Reduction</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>Qwen2.5-VL-3B</td>
+                                <td>768 × 768</td>
+                                <td>24</td>
+                                <td>731</td>
+                                <td>0.135</td>
+                                <td rowspan="2">50.4%</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>768 × 768</td>
+                                <td>24</td>
+                                <td>731 + 256</td>
+                                <td>0.067</td>
+                            </tr>
+                            <tr>
+                                <td>Qwen2.5-VL-3B</td>
+                                <td>1024 × 1024</td>
+                                <td>24</td>
+                                <td>1395</td>
+                                <td>0.216</td>
+                                <td rowspan="2">57.4%</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>1024 × 1024</td>
+                                <td>24</td>
+                                <td>1395 + 256</td>
+                                <td>0.092</td>
+                            </tr>
+                            <tr>
+                                <td>Qwen2.5-VL-3B</td>
+                                <td>1792 × 1792</td>
+                                <td>24</td>
+                                <td>4098</td>
+                                <td>0.583</td>
+                                <td rowspan="2">61.4%</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>1792 × 1792</td>
+                                <td>24</td>
+                                <td>4098 + 256</td>
+                                <td>0.225</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+                <div class="benchmark-table">
+                    <div class="table-subtitle">Generation efficiency comparison of OneCAT-3B and BAGEL-7B</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Model</th>
+                                <th>Resolution of Generated Image</th>
+                                <th>T2I Infer. Time (s)</th>
+                                <th>Edit Infer. Time (s)</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>BAGEL-7B</td>
+                                <td>512 × 512</td>
+                                <td>8.762</td>
+                                <td>13.447</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>512 × 512</td>
+                                <td>1.919</td>
+                                <td>2.033</td>
+                            </tr>
+                            <tr>
+                                <td>BAGEL-7B</td>
+                                <td>1024 × 1024</td>
+                                <td>26.293</td>
+                                <td>46.444</td>
+                            </tr>
+                            <tr>
+                                <td>OneCAT-3B</td>
+                                <td>1024 × 1024</td>
+                                <td>2.851</td>
+                                <td>2.860</td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </section>
+
+        </div>
+    </main>
+
+    <footer>
+        <div class="container">
+            <p>&copy; 2025 OneCAT Team. All rights reserved.</p>
+            <p>Meituan Inc & Shanghai Jiao Tong University</p>
+        </div>
+    </footer>
+
+    <script>
+    // Auto-validate and highlight best/second-best per metric in the Understanding table
+    (function() {
+        var section = document.querySelector('#understanding');
+        if (!section) return;
+        var table = section.querySelector('table');
+        if (!table) return;
+        var tbody = table.tBodies[0];
+        if (!tbody) return;
+        var rows = Array.prototype.slice.call(tbody.rows);
+        var header = table.tHead ? table.tHead.rows[0] : null;
+        var colCount = header ? header.cells.length : (rows[0] ? rows[0].cells.length : 0);
+        var metricStart = 3; // Model, A-LLM, Vis. then metrics
+        for (var colIdx = metricStart; colIdx < colCount; colIdx++) {
+            var values = [];
+            for (var i = 0; i < rows.length; i++) {
+                var r = rows[i];
+                if (r.cells.length <= colIdx) continue; // skip group title rows
+                var td = r.cells[colIdx];
+                var raw = (td.textContent || '').trim();
+                var numStr = raw.replace(/[^0-9.\-]/g, '');
+                var val = numStr === '' ? NaN : Number(numStr);
+                values.push({ td: td, val: val });
+            }
+            var valid = values.filter(function(v) { return isFinite(v.val); });
+            if (!valid.length) continue;
+            valid.sort(function(a, b) { return b.val - a.val; });
+            var best = valid[0];
+            var second = valid[1];
+            values.forEach(function(x) { x.td.classList.remove('best', 'second'); });
+            var hasManualBest = best.td.querySelector('strong');
+            var hasManualSecond = second && second.td.querySelector('u');
+            if (!hasManualBest) best.td.classList.add('best');
+            if (second && !hasManualSecond) second.td.classList.add('second');
+        }
+    })();
+    </script>
+
+    <script src="script.js"></script>
+</body>
+</html>

@@ -1,0 +1,349 @@
+/* 额外的CSS样式 */
+
+/* 动画效果 */
+@keyframes fadeInUp {
+    from {
+        opacity: 0;
+        transform: translateY(30px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+@keyframes pulse {
+    0% {
+        transform: scale(1);
+    }
+    50% {
+        transform: scale(1.05);
+    }
+    100% {
+        transform: scale(1);
+    }
+}
+
+/* 滚动动画 */
+.fade-in {
+    animation: fadeInUp 0.8s ease-out forwards;
+}
+
+.pulse-animation {
+    animation: pulse 2s infinite;
+}
+
+/* 响应式图片画廊 */
+.image-gallery {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 1rem;
+    margin: 2rem 0;
+}
+
+.gallery-item {
+    position: relative;
+    overflow: hidden;
+    border-radius: 12px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+
+.gallery-item:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.15);
+}
+
+.gallery-item img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover img {
+    transform: scale(1.1);
+}
+
+.gallery-overlay {
+    position: absolute;
+    bottom: 0;
+    left: 0;
+    right: 0;
+    background: linear-gradient(transparent, rgba(0, 0, 0, 0.8));
+    color: white;
+    padding: 1rem;
+    transform: translateY(100%);
+    transition: transform 0.3s ease;
+}
+
+.gallery-item:hover .gallery-overlay {
+    transform: translateY(0);
+}
+
+/* 进度条 */
+.progress-bar {
+    width: 100%;
+    height: 8px;
+    background: #e5e7eb;
+    border-radius: 4px;
+    overflow: hidden;
+    margin: 1rem 0;
+}
+
+.progress-fill {
+    height: 100%;
+    background: linear-gradient(45deg, #FF8C00, #cc7000);
+    border-radius: 4px;
+    transition: width 1s ease;
+}
+
+/* 性能指标卡片 */
+.metric-card {
+    background: linear-gradient(135deg, #FF8C00 0%, #cc7000 100%);
+    color: white;
+    padding: 1.5rem;
+    border-radius: 12px;
+    text-align: center;
+    position: relative;
+    overflow: hidden;
+}
+
+.metric-card::before {
+    content: '';
+    position: absolute;
+    top: -50%;
+    left: -50%;
+    width: 200%;
+    height: 200%;
+    background: radial-gradient(circle, rgba(255, 255, 255, 0.1) 0%, transparent 70%);
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.metric-card:hover::before {
+    opacity: 1;
+}
+
+.metric-value {
+    font-size: 2.5rem;
+    font-weight: 700;
+    margin-bottom: 0.5rem;
+}
+
+.metric-label {
+    font-size: 0.9rem;
+    opacity: 0.9;
+}
+
+/* 代码块样式 */
+.code-block {
+    background: #1f2937;
+    color: #e5e7eb;
+    padding: 1.5rem;
+    border-radius: 8px;
+    font-family: 'Monaco', 'Consolas', monospace;
+    font-size: 0.9rem;
+    overflow-x: auto;
+    margin: 1rem 0;
+}
+
+.code-block .keyword {
+    color: #fbbf24;
+}
+
+.code-block .string {
+    color: #34d399;
+}
+
+.code-block .comment {
+    color: #9ca3af;
+    font-style: italic;
+}
+
+/* 工具提示 */
+.tooltip {
+    position: relative;
+    cursor: help;
+}
+
+.tooltip::after {
+    content: attr(data-tooltip);
+    position: absolute;
+    bottom: 125%;
+    left: 50%;
+    transform: translateX(-50%);
+    background: #1f2937;
+    color: white;
+    padding: 0.5rem 1rem;
+    border-radius: 6px;
+    font-size: 0.8rem;
+    white-space: nowrap;
+    opacity: 0;
+    pointer-events: none;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip::before {
+    content: '';
+    position: absolute;
+    bottom: 115%;
+    left: 50%;
+    transform: translateX(-50%);
+    border: 5px solid transparent;
+    border-top-color: #1f2937;
+    opacity: 0;
+    transition: opacity 0.3s ease;
+}
+
+.tooltip:hover::after,
+.tooltip:hover::before {
+    opacity: 1;
+}
+
+/* 加载动画 */
+.loading-spinner {
+    width: 40px;
+    height: 40px;
+    border: 4px solid #e5e7eb;
+    border-left-color: #FF8C00;
+    border-radius: 50%;
+    animation: spin 1s linear infinite;
+    margin: 2rem auto;
+}
+
+@keyframes spin {
+    to {
+        transform: rotate(360deg);
+    }
+}
+
+/* 表格优化样式 */
+.benchmark-table {
+    margin-bottom: 3rem;
+}
+
+.benchmark-table table {
+    font-size: 0.9rem;
+}
+
+.benchmark-table th {
+    background: #ffffff; /* no gradient */
+    color: #374151;
+    font-weight: 600;
+    text-align: center;
+    padding: 1rem 0.5rem;
+    border-bottom: 4px solid #FF8C00; /* thick divider below header in theme color */
+}
+
+.benchmark-table td {
+    text-align: center;
+    padding: 0.8rem 0.5rem;
+    border-bottom: 1px solid #e5e7eb;
+}
+
+.benchmark-table .highlight {
+    background: linear-gradient(45deg, #FF8C00, #cc7000);
+    color: white;
+    padding: 0.3rem 0.6rem;
+    border-radius: 6px;
+    font-weight: 600;
+    font-size: 0.85rem;
+}
+
+/* Efficiency section table subtitles and spacing */
+#efficiency .table-subtitle {
+    text-align: center;
+    font-weight: 700;
+    font-size: 1.25rem;
+    color: #1f2937;
+    margin-bottom: 1rem;
+}
+
+#efficiency .benchmark-table + .benchmark-table {
+    margin-top: 4rem; /* extra separation between the two efficiency tables */
+}
+
+/* 表格行悬停效果 */
+.benchmark-table tbody tr:hover {
+    background-color: #f8fafc;
+    transition: background-color 0.2s ease;
+}
+
+/* 响应式表格 */
+@media (max-width: 768px) {
+    .benchmark-table {
+        overflow-x: auto;
+        -webkit-overflow-scrolling: touch;
+    }
+    
+    .benchmark-table table {
+        min-width: 600px;
+        font-size: 0.8rem;
+    }
+    
+    .benchmark-table th,
+    .benchmark-table td {
+        padding: 0.5rem 0.3rem;
+    }
+}
+
+/* 表格标题间距 */
+.section h2 {
+    margin-bottom: 1.5rem;
+}
+
+/* 表格说明文字 */
+.section p {
+    margin-top: 1rem;
+    font-style: italic;
+}
+
+/* 深色模式支持 */
+@media (prefers-color-scheme: dark) {
+    .feature-card {
+        background: #374151;
+        color: #e5e7eb;
+    }
+    
+    .feature-card h3 {
+        color: #fbbf24; /* orange accent */
+    }
+    
+    .training-pipeline {
+        background: #374151;
+    }
+    
+    .pipeline-stage {
+        background: #4b5563;
+        color: #e5e7eb;
+        border-left-color: #f59e0b; /* orange accent */
+    }
+    
+    .pipeline-stage h4 {
+        color: #fbbf24; /* orange accent */
+    }
+}
+
+/* 平滑滚动 */
+html {
+    scroll-behavior: smooth;
+}
+
+/* 自定义滚动条 */
+::-webkit-scrollbar {
+    width: 8px;
+}
+
+::-webkit-scrollbar-track {
+    background: #f1f5f9;
+}
+
+::-webkit-scrollbar-thumb {
+    background: linear-gradient(45deg, #FF8C00, #cc7000);
+    border-radius: 4px;
+}
+
+::-webkit-scrollbar-thumb:hover {
+    background: linear-gradient(45deg, #cc7000, #a85700);
+}
