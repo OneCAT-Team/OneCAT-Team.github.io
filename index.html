@@ -9,41 +9,59 @@
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
 
-        body {
+        /* body {
             font-family: 'Inter', sans-serif;
             line-height: 1.6;
             color: #333;
-            background: linear-gradient(135deg, #FF8C00 0%, #cc7000 100%);
+            background: linear-gradient(135deg, #FF8C00 50%, #cc7000 50%);
             min-height: 100vh;
-        }
+        } */
 
         .container { max-width: 1200px; margin: 0 auto; padding: 0 20px; }
-        header { padding: 2rem 0; text-align: center; color: white; }
+        
         .logo { width: 80px; height: 80px; margin: 0 auto 1rem; background: rgba(255,255,255,0.1); border-radius: 50%; display: flex; align-items: center; justify-content: center; font-size: 2rem; font-weight: 700; }
-        h1 { font-size: 3.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(45deg, rgba(255,140,0,0.22), rgba(255,140,0,0.06)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
+        h1 { font-size: 2.5rem; font-weight: 700; margin-bottom: 1rem; background: linear-gradient(45deg, rgba(255,140,0,0.22), rgba(255,140,0,0.06)); -webkit-background-clip: text; -webkit-text-fill-color: transparent; background-clip: text; }
         .subtitle { font-size: 1.2rem; margin-bottom: 2rem; opacity: 0.9; }
-        .release-date { font-size: 0.9rem; opacity: 0.8; margin-bottom: 2rem; }
-        .authors { font-size: 1rem; margin-bottom: 2rem; opacity: 0.9; }
+        /* .release-date { font-size: 0.9rem; opacity: 0.8; margin-bottom: 2rem; } */
+        /* .authors { font-size: 1rem; margin-bottom: 2rem; opacity: 0.9; } */
 
-        .links { display: flex; justify-content: center; gap: 1rem; margin-bottom: 3rem; flex-wrap: wrap; }
-        .link-btn { padding: 0.75rem 1.5rem; background: rgba(255,255,255,0.1); color: white; text-decoration: none; border-radius: 8px; border: 1px solid rgba(255,255,255,0.2); transition: all 0.3s ease; backdrop-filter: blur(10px); }
-        .link-btn:hover { background: rgba(255,255,255,0.2); transform: translateY(-2px); }
+        
+        
 
         .main-content { background: white; border-radius: 20px 20px 0 0; box-shadow: 0 -10px 50px rgba(0,0,0,0.1); padding: 3rem 0; margin-top: 2rem; }
-        .intro { text-align: center; margin-bottom: 4rem; padding: 0 2rem; }
-        .intro p { font-size: 1.1rem; color: #666; max-width: 800px; margin: 0 auto; }
+        /* .intro { text-align: center; margin-bottom: 4rem; padding: 0 2rem; }
+        .intro p { font-size: 1.1rem; color: #666; max-width: 800px; margin: 0 auto; } */
+        /* --- 介绍部分的样式 --- */
+        .intro p {
+            font-size: 1.2rem;  /* 稍微增大字体 */
+            line-height: 1.8;   /* 增加行高，提升可读性 */
+            
+            /* 核心：实现两端对齐 */
+            text-align: justify;
+             
+            /* 优化：开启自动断字以改善间距 */
+            -webkit-hyphens: auto;
+            -ms-hyphens: auto;
+            hyphens: auto;
+        }
+        
+
+        .intro strong {
+            color: #FF8C00; /* 让关键词高亮 */
+        }
         .section { margin-bottom: 4rem; padding: 0 2rem; }
-        .section h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 2rem; text-align: center; color: #333; }
+        .section h2 { font-size: 2.5rem; font-weight: 600; margin-bottom: 2rem; text-align: center; color: #FF8C00; }
 
         .architecture-grid { display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 2rem; margin-bottom: 3rem; }
         .feature-card { background: #f8fafc; padding: 2rem; border-radius: 12px; border-left: 4px solid #FF8C00; }
-        .feature-card h3 { color: #FF8C00; margin-bottom: 1rem; font-size: 1.3rem; }
+        .feature-card h3 { color: #FF8C00; margin-bottom: 1rem; font-size: 1.2rem; }
         .feature-card p { color: #666; line-height: 1.6; }
 
         .benchmark-table { overflow-x: auto; margin-bottom: 2rem; }
         table { width: 100%; border-collapse: collapse; background: white; border-radius: 8px; overflow: hidden; box-shadow: 0 4px 6px rgba(0,0,0,0.1); }
-        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #e5e7eb; }
+        th, td { padding: 1rem; text-align: left; border-bottom: 1px solid #000000; }
         th { background: #ffffff; font-weight: 600; color: #374151; }
+        td { background: #ffffff; font-weight: 600; color: #36393c; }
         thead th { border-bottom: 4px solid #d1d5db; }
 
         .highlight { background: linear-gradient(45deg, #FF8C00, #cc7000); color: white; padding: 0.2rem 0.5rem; border-radius: 4px; font-weight: 600; }
@@ -70,6 +88,7 @@
             .section { padding: 0 1rem; }
             .intro { padding: 0 1rem; }
         }
+        
 
     /* Figure embeds */
     .architecture-figure { background: #f8fafc; border-radius: 12px; padding: 1rem; box-shadow: 0 4px 6px rgba(0,0,0,0.06); margin-top: 1rem; }
@@ -96,27 +115,49 @@
 <body>
     <header>
         <div class="container">
-            <h1 style="color: white; background: none; -webkit-text-fill-color: white;">OneCAT</h1>
-            <p class="subtitle">Decoder-Only Auto-Regressive Model for Unified Understanding and Generation</p>
-            <p class="release-date">Released on Sep 2025</p>
+            <h1 style="color: #FF8C00; background: none; -webkit-text-fill-color: #FF8C00;">OneCAT: Unified Decoder-Only Auto-Regressive Model</h1>
+            <!-- <p class="subtitle">Decoder-Only Auto-Regressive Model for Unified Understanding and Generation</p> -->
+            <!-- <p class="release-date">Released on Sep 2025</p> -->
+            <!-- 这个 p 标签将会应用 .authors 的专属样式 -->
             <p class="authors">
                 Han Li*, Xinyu Peng*, Yaoming Wang†, Zelin Peng, Xin Chen,<br>
                 Rongxiang Weng, Jingang Wang, Xunliang Cai, Wenrui Dai, Hongkai Xiong<br>
                 <small>*Equal contribution, †Project lead</small>
             </p>
             <div class="links">
-                <a href="https://github.com/onecat-ai/onecat" class="link-btn">GitHub</a>
-                <a href="https://huggingface.co/onecat-ai" class="link-btn">HuggingFace</a>
-                <a href="/home/xinyu_peng/workspace/onecat-page/arXiv-2505.14683v3/main.tex" class="link-btn">Paper</a>
+                <a href="https://github.com/onecat-ai/onecat" target="_blank" class="link-btn">
+                    <!-- 
+                        核心修改: 
+                        1. 将 viewBox 从 "0 0 48 24" 改为 "0 0 24 24"
+                        2. 删除了 title 和 path 之外的多余属性
+                    -->
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg">
+                        <path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/>
+                    </svg>
+                    GitHub
+                </a>
+                <!-- Hugging Face Button (Corrected) -->
+                <a href="https://huggingface.co/onecat-ai" target="_blank" class="link-btn">
+                    <svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><title>HuggingFace</title><path d="M16.781 3.277c2.997 1.704 4.844 4.851 4.844 8.258 0 .995-.155 1.955-.443 2.857a1.332 1.332 0 011.125.4 1.41 1.41 0 01.2 1.723c.204.165.352.385.428.632l.017.062c.06.222.12.69-.2 1.166.244.37.279.836.093 1.236-.255.57-.893 1.018-2.128 1.5l-.202.078-.131.048c-.478.173-.89.295-1.061.345l-.086.024c-.89.243-1.808.375-2.732.394-1.32 0-2.3-.36-2.923-1.067a9.852 9.852 0 01-3.18.018C9.778 21.647 8.802 22 7.494 22a11.249 11.249 0 01-2.541-.343l-.221-.06-.273-.08a16.574 16.574 0 01-1.175-.405c-1.237-.483-1.875-.93-2.13-1.501-.186-.4-.151-.867.093-1.236a1.42 1.42 0 01-.2-1.166c.069-.273.226-.516.447-.694a1.41 1.41 0 01.2-1.722c.233-.248.557-.391.917-.407l.078-.001a9.385 9.385 0 01-.44-2.85c0-3.407 1.847-6.554 4.844-8.258a9.822 9.822 0 019.687 0zM4.188 14.758c.125.687 2.357 2.35 2.14 2.707-.19.315-.796-.239-.948-.386l-.041-.04-.168-.147c-.561-.479-2.304-1.9-2.74-1.432-.43.46.119.859 1.055 1.42l.784.467.136.083c1.045.643 1.12.84.95 1.113-.188.295-3.07-2.1-3.34-1.083-.27 1.011 2.942 1.304 2.744 2.006-.2.7-2.265-1.324-2.685-.537-.425.79 2.913 1.718 2.94 1.725l.16.04.175.042c1.227.284 3.565.65 4.435-.604.673-.973.64-1.709-.248-2.61l-.057-.057c-.945-.928-1.495-2.288-1.495-2.288l-.017-.058-.025-.072c-.082-.22-.284-.639-.63-.584-.46.073-.798 1.21.12 1.933l.05.038c.977.721-.195 1.21-.573.534l-.058-.104-.143-.25c-.463-.799-1.282-2.111-1.739-2.397-.532-.332-.907-.148-.782.541zm14.842-.541c-.533.335-1.563 2.074-1.94 2.751a.613.613 0 01-.687.302.436.436 0 01-.176-.098.303.303 0 01-.049-.06l-.014-.028-.008-.02-.007-.019-.003-.013-.003-.017a.289.289 0 01-.004-.048c0-.12.071-.266.25-.427.026-.024.054-.047.084-.07l.047-.036c.022-.016.043-.032.063-.049.883-.71.573-1.81.131-1.917l-.031-.006-.056-.004a.368.368 0 00-.062.006l-.028.005-.042.014-.039.017-.028.015-.028.019-.036.027-.023.02c-.173.158-.273.428-.31.542l-.016.054s-.53 1.309-1.439 2.234l-.054.054c-.365.358-.596.69-.702 1.018-.143.437-.066.868.21 1.353.055.097.117.195.187.296.882 1.275 3.282.876 4.494.59l.286-.07.25-.074c.276-.084.736-.233 1.2-.42l.188-.077.065-.028.064-.028.124-.056.081-.038c.529-.252.964-.543.994-.827l.001-.036a.299.299 0 00-.037-.139c-.094-.176-.271-.212-.491-.168l-.045.01c-.044.01-.09.024-.136.04l-.097.035-.054.022c-.559.23-1.238.705-1.607.745h.006a.452.452 0 01-.05.003h-.024l-.024-.003-.023-.005c-.068-.016-.116-.06-.14-.142a.22.22 0 01-.005-.1c.062-.345.958-.595 1.713-.91l.066-.028c.528-.224.97-.483.985-.832v-.04a.47.47 0 00-.016-.098c-.048-.18-.175-.251-.36-.251-.785 0-2.55 1.36-2.92 1.36-.025 0-.048-.007-.058-.024a.6.6 0 01-.046-.088c-.1-.238.068-.462 1.06-1.066l.209-.126c.538-.32 1.01-.588 1.341-.831.29-.212.475-.406.503-.6l.003-.028c.008-.113-.038-.227-.147-.344a.266.266 0 00-.07-.054l-.034-.015-.013-.005a.403.403 0 00-.13-.02c-.162 0-.369.07-.595.18-.637.313-1.431.952-1.826 1.285l-.249.215-.033.033c-.08.078-.288.27-.493.386l-.071.037-.041.019a.535.535 0 01-.122.036h.005a.346.346 0 01-.031.003l.01-.001-.013.001c-.079.005-.145-.021-.19-.095a.113.113 0 01-.014-.065c.027-.465 2.034-1.991 2.152-2.642l.009-.048c.1-.65-.271-.817-.791-.493zM11.938 2.984c-4.798 0-8.688 3.829-8.688 8.55 0 .692.083 1.364.24 2.008l.008-.009c.252-.298.612-.46 1.017-.46.355.008.699.117.993.312.22.14.465.384.715.694.261-.372.69-.598 1.15-.605.852 0 1.367.728 1.562 1.383l.047.105.06.127c.192.396.595 1.139 1.143 1.68 1.06 1.04 1.324 2.115.8 3.266a8.865 8.865 0 002.024-.014c-.505-1.12-.26-2.17.74-3.186l.066-.066c.695-.684 1.157-1.69 1.252-1.912.195-.655.708-1.383 1.56-1.383.46.007.889.233 1.15.605.25-.31.495-.553.718-.694a1.87 1.87 0 01.99-.312c.357 0 .682.126.925.36.14-.61.215-1.245.215-1.898 0-4.722-3.89-8.55-8.687-8.55zm1.857 8.926l.439-.212c.553-.264.89-.383.89.152 0 1.093-.771 3.208-3.155 3.262h-.184c-2.325-.052-3.116-2.06-3.156-3.175l-.001-.087c0-1.107 1.452.586 3.25.586.716 0 1.379-.272 1.917-.526zm4.017-3.143c.45 0 .813.358.813.8 0 .441-.364.8-.813.8a.806.806 0 01-.812-.8c0-.442.364-.8.812-.8zm-11.624 0c.448 0 .812.358.812.8 0 .441-.364.8-.812.8a.806.806 0 01-.813-.8c0-.442.364-.8.813-.8zm7.79-.841c.32-.384.846-.54 1.33-.394.483.146.83.564.878 1.06.048.495-.212.97-.659 1.203-.322.168-.447-.477-.767-.585l.002-.003c-.287-.098-.772.362-.925.079a1.215 1.215 0 01.14-1.36zm-4.323 0c.322.384.377.92.14 1.36-.152.283-.64-.177-.925-.079l.003.003c-.108.036-.194.134-.273.24l-.118.165c-.11.15-.22.262-.377.18a1.226 1.226 0 01-.658-1.204c.048-.495.395-.913.878-1.059a1.262 1.262 0 011.33.394z"></path></svg>
+                    Hugging Face
+                </a>
+                <a href="your-arxiv-link-here" target="_blank" class="link-btn">
+                    <!-- Paper / ArXiv SVG Icon -->
+                    <svg viewBox="0 0 18 25" xmlns="http://www.w3.org/2000/svg" fill="currentColor">
+                        <path d="M6.565 9.368l2.266 2.738 6.674-7.84c.353-.47.52-.717.353-1.117a1.218 1.218 0 0 0-1.06-.748.953.953 0 0 0-.712.262z M12.541 10.677L1.935.503a1.413 1.413 0 0 0-.834-.5A1.09 1.09 0 0 0 .074.663c-.167.4-.047.681.319 1.206l8.44 10.242-6.282 7.716a1.336 1.336 0 0 0-.323 1.3 1.114 1.114 0 0 0 1.04.69.992.992 0 0 0 .742-.282l8.519-7.92a1.924 1.924 0 0 0 0-2.838z M17.336 22.364l-8.525-10.275L6.546 9.352l-1.389 1.254a2.063 2.063 0 0 0 0 2.965l10.812 10.419a.925.925 0 0 0 .742.282 1.039 1.039 0 0 0 .953-.667 1.261 1.261 0 0 0-.323-1.246z"/>
+                    </svg>
+                    Paper
+                </a>
             </div>
         </div>
     </header>
 
-    <main class="main-content">
+    <!-- <main class="main-content"> -->
+    <main>
         <div class="container">
             <section class="intro">
                 <p>
-                    We introduce <strong>OneCAT</strong>, the open-source unified multimodal model that seamlessly integrates understanding, generation, and editing within a novel, pure decoder-only transformer architecture. Our framework uniquely eliminates the need for external components such as Vision Transformers (ViT) or Visual Tokenizer during inference, leading to significant efficiency gains and setting a new performance standard for unified multimodal intelligence.
+                    We introduce <strong>OneCAT</strong>, the open-source unified multimodal model that seamlessly integrates understanding, generation, and editing within a novel, <strong>pure decoder-only</strong> transformer architecture. Our framework uniquely eliminates the need for external components such as Vision Transformers (ViT) or Visual Tokenizer during inference, leading to significant efficiency gains and setting a new performance standard for unified multimodal intelligence.
                 </p>
             </section>
 
@@ -124,15 +165,15 @@
                 <h2>Architecture</h2>
                 <div class="architecture-grid">
                     <div class="feature-card">
-                        <h3>🧠 Pure Decoder-Only Design</h3>
+                        <h3>Pure Decoder-Only Design</h3>
                         <p>Eliminates external vision encoders and VAE tokenizers during inference, using only a lightweight patch embedding layer for raw image processing.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>⚡ Mixture-of-Experts (MoE)</h3>
+                        <h3>Mixture-of-Experts (MoE)</h3>
                         <p>Three specialized FFN experts: Text FFN for language comprehension, Understanding FFN for visual tokens, and Generation FFN for image synthesis.</p>
                     </div>
                     <div class="feature-card">
-                        <h3>🎯 Multi-Scale Autoregressive</h3>
+                        <h3>Multi-Scale Autoregressive</h3>
                         <p>Pioneer Next Scale Prediction paradigm that generates images coarse-to-fine, drastically reducing generation steps compared to diffusion models.</p>
                     </div>
                 </div>
@@ -206,7 +247,6 @@
             <section class="section" id="understanding">
                 <h2>Multimodal Understanding</h2>
                 <div class="benchmark-table">
-                    <div class="table-subtitle">Higher is better. Best in <strong>bold</strong>, second-best <u>underlined</u>.</div>
                     <table>
                         <thead>
                             <tr>
@@ -223,7 +263,7 @@
                             </tr>
                         </thead>
                         <tbody>
-                            <tr><td colspan="10"><i>Encoder-based Understanding Only Models</i></td></tr>
+                            <tr><td colspan="10">Encoder-based Understanding Only Models</td></tr>
                             <tr>
                                 <td>InternVL2</td>
                                 <td>1.8B</td>
@@ -272,7 +312,7 @@
                                 <td>62.3</td>
                                 <td>—</td>
                             </tr>
-                            <tr><td colspan="10"><i>Encoder-free Understanding Only Models</i></td></tr>
+                            <tr><td colspan="10">Encoder-free Understanding Only Models</td></tr>
                             <tr>
                                 <td>Mono-InternVL</td>
                                 <td>1.8B</td>
@@ -321,7 +361,7 @@
                                 <td>46.2</td>
                                 <td>70.7</td>
                             </tr>
-                            <tr><td colspan="10"><i>Unified Models</i></td></tr>
+                            <tr><td colspan="10">Unified Models</td></tr>
                             <tr>
                                 <td>Chameleon</td>
                                 <td>7B</td>
@@ -361,14 +401,14 @@
                             <tr>
                                 <td>Show-o2 (1.5B)</td>
                                 <td>1.5B</td>
-                                <td>0.1B</td>
+                                <td>0.5B</td>
                                 <td>1450</td>
                                 <td>—</td>
                                 <td>67.4</td>
                                 <td>37.1</td>
                                 <td>—</td>
                                 <td>—</td>
-                                <td>—</td>
+                                <td>65.6</td>
                             </tr>
                             <tr>
                                 <td>Janus-Pro (1.5B)</td>
@@ -388,11 +428,11 @@
                                 <td>0.6B</td>
                                 <td>1414</td>
                                 <td>—</td>
-                                <td>80.8</td>
-                                <td>44.3</td>
+                                <td><strong>80.8</strong></td>
+                                <td><u>44.3</u></td>
                                 <td>40.3</td>
                                 <td>—</td>
-                                <td>73.3</td>
+                                <td><strong>73.3</strong></td>
                             </tr>
                             <tr>
                                 <td>VILA-U</td>
@@ -433,11 +473,11 @@
                             <tr>
                                 <td>Show-o2 (7B)</td>
                                 <td>7B</td>
-                                <td>0.1B</td>
-                                <td>1620</td>
+                                <td>0.5B</td>
+                                <td><u>1620</u></td>
                                 <td>—</td>
-                                <td>79.3</td>
-                                <td>48.9</td>
+                                <td><u>79.3</u></td>
+                                <td><strong>48.9</strong></td>
                                 <td>—</td>
                                 <td>—</td>
                                 <td>69.8</td>
@@ -446,16 +486,20 @@
                                 <td><strong>OneCAT-3B</strong></td>
                                 <td>3B</td>
                                 <td>/</td>
-                                <td>1630</td>
-                                <td>2051</td>
+                                <td><strong>1630</strong></td>
+                                <td><strong>2051</strong></td>
                                 <td>78.8</td>
                                 <td>41.9</td>
-                                <td>52.2</td>
-                                <td>61.7</td>
-                                <td>72.5</td>
+                                <td><strong>52.2</strong></td>
+                                <td><strong>61.7</strong></td>
+                                <td><u>72.5</u></td>
                             </tr>
                         </tbody>
                     </table>
+                    <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                        Higher is better. Best in <strong>yellow</strong>, second-best <u>underlined</u>.
+                    </p>
+                    <!-- <div class="table-subtitle">Higher is better. Best in <strong>bold</strong>, second-best <u>underlined</u>.</div> -->
                 </div>
             </section>
 
@@ -528,10 +572,10 @@
                             </tr>
                         </tbody>
                     </table>
+                    <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                        GenEval and DPG-Bench results. Best in <strong>yellow</strong>, second-best <u>underlined</u>. † indicates prompt rewriting where applicable.
+                    </p>
                 </div>
-                <p style="text-align: center; color: #666; font-size: 0.9rem;">
-                    GenEval and DPG-Bench results. Best in bold, second underlined. † indicates prompt rewriting where applicable.
-                </p>
             </section>
 
             <section class="section" id="editing">
@@ -699,10 +743,11 @@
                             </tr>
                         </tbody>
                     </table>
+                    <p style="text-align: center; color: #666; font-size: 0.9rem;">
+                        ImgEdit-Bench results. Best in <strong>yellow</strong>, second-best <u>underlined</u>.
+                    </p>
                 </div>
-                <p style="text-align: center; color: #666; font-size: 0.9rem;">
-                    ImgEdit-Bench results. Best in bold, second underlined.
-                </p>
+                
             </section>
 
             <section class="section" id="efficiency">
@@ -820,7 +865,7 @@
         </div>
     </footer>
 
-    <script>
+    <!-- <script>
     // Auto-validate and highlight best/second-best per metric in the Understanding table
     (function() {
         var section = document.querySelector('#understanding');
@@ -856,7 +901,7 @@
             if (second && !hasManualSecond) second.td.classList.add('second');
         }
     })();
-    </script>
+    </script> -->
 
     <script src="script.js"></script>
 </body>
