@@ -347,3 +347,112 @@ html {
 ::-webkit-scrollbar-thumb:hover {
     background: linear-gradient(45deg, #cc7000, #a85700);
 }
+
+.links { 
+    display: flex; 
+    justify-content: center; 
+    gap: 1rem; /* 按钮之间的间距 */
+    margin-top: 2rem; /* 增加按钮组与上方作者信息的距离 */
+    margin-bottom: 3rem; 
+    flex-wrap: wrap; 
+}
+
+.link-btn { 
+    display: flex;
+    align-items: center;
+    justify-content: center; 
+    
+    padding: 0.6rem 1.2rem;   /* 内边距: 上下约10px, 左右约19px */
+    gap: 0.6rem;              /* 内部间距: 图标和文字之间约10px */
+    
+    background: rgba(255,255,255,0.1); 
+    color: #FF8C00; 
+    text-decoration: none; 
+    border-radius: 16px; 
+    border: 1px solid #FF8C00; 
+    transition: all 0.3s ease; 
+    backdrop-filter: blur(10px); 
+    font-size: 1.1rem;
+    font-weight: 500;
+}
+
+.link-btn:hover { 
+    background: rgba(255,255,255,0.2); 
+    transform: translateY(-2px); 
+}
+
+/* 这个选择器现在可以正确地应用到修正后的SVG上 */
+.link-btn svg { 
+    width: 22px;  /* 尺寸可以微调以获得最佳视觉效果 */
+    height: 22px;
+    fill: currentColor; 
+}
+
+.intro {
+    /* --- 核心修改 --- */
+    max-width: 105ch; /* 容器可以稍微宽一点 */
+    margin-left: auto;
+    margin-right: auto;
+}
+.intro p {
+    font-size: 1.1em;
+    line-height: 1.8;
+    color: #070101d6;
+    
+    /* --- 核心修改 --- */
+    text-align: justify;
+
+    /* --- 可选的优化，改善两端对齐的效果 --- */
+    -webkit-hyphens: auto; /* 为 Webkit 浏览器 (Chrome, Safari) 开启自动断字 */
+    -ms-hyphens: auto;    /* 为 IE/Edge 开启自动断字 */
+    hyphens: auto;        /* 标准的自动断字 */
+}
+
+/* --- 作者列表的专属样式 --- */
+.authors {
+    font-size: 1.3rem; /* <-- 在这里设置您想要的字体大小 */
+    color: #050101fd;     /* 也可以设置一个稍浅的颜色以作区分 */
+    line-height: 1.6;   /* 可以为作者列表设置一个更紧凑的行高 */
+    text-align: center; /* 确保作者列表居中显示 */
+    margin-top: 2rem;   /* 增加与上方标题的距离 */
+    margin-bottom: 1.5rem; /* 增加与下方摘要的距离 */
+}
+
+/* 针对作者下方的说明文字，可以进一步调整 */
+.authors small {
+    display: block; /* 让 small 标签独占一行 */
+    margin-top: 0.75rem; /* 增加与作者名字的距离 */
+    font-size: 1.1rem;  /* 让说明文字比作者名字更小 */
+    /* font-style: italic; */
+}
+
+@keyframes gradient-animation {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
+}
+
+body {
+    font-family: 'Inter', sans-serif;
+    line-height: 1.6;
+    color: #e0e0e0;
+    
+    
+    
+    /* 应用动画 */
+    animation: gradient-animation 15s ease infinite; /* 动画名、时长、速度曲线、无限循环 */
+
+    min-height: 100vh;
+}
+header { 
+    padding: 2rem 0; 
+    text-align: center; 
+    color: white; 
+    padding: 60px 20px 20px 20px; 
+}
+
+.benchmark-table strong {
+    /* --- 核心修改 --- */
+    color: #FF8C00;     /* <-- 设置为您喜欢的主题高亮色 (这里用一个优雅的深紫色) */
+    font-weight: 600;   /* <-- 推荐: 保留一定的字重，但比默认的bold更柔和 */
+}
