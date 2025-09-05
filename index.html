@@ -159,7 +159,7 @@
             top: 50%;
             left: 0;
             right: 0;
-            display: flex;
+            display: none; /* 隐藏左右箭头控制器 */
             justify-content: space-between;
             transform: translateY(-50%);
             pointer-events: none; /* 让按钮本身不阻挡鼠标事件 */
@@ -1132,7 +1132,7 @@
                                         <img src="assets/edit_in4.png" alt="Input for the model">
                                         <div class="text-content">
                                             <!-- <strong>User:</strong> -->
-                                            <p>Change this image into 8-bit Graffiti Art style.</p>
+                                            <p>Change this image into Graffiti Art style.</p>
                                         </div>
                                     </div>
                                     
@@ -1848,7 +1848,8 @@
                 </div>
                 
             </section>
-
+        </div>
+        <div class="container">
             <section class="section" id="efficiency">
                 <h2>Efficiency Analysis</h2>
                 <div class="benchmark-table">
