@@ -456,3 +456,29 @@ header {
     color: #FF8C00;     /* <-- 设置为您喜欢的主题高亮色 (这里用一个优雅的深紫色) */
     font-weight: 600;   /* <-- 推荐: 保留一定的字重，但比默认的bold更柔和 */
 }
+
+/* --- 新增: Showcase 标题和容器的样式 --- */
+
+.showcase-container {
+    text-align: center; /* 让内部的所有内容（标题和按钮）都居中 */
+    margin-top: 50px;   /* 与上方内容的距离 */
+    margin-bottom: 20px; /* 与下方section的距离 */
+}
+
+.showcase-title {
+    font-size: 2.5rem;      /* 设置标题字体大小 */
+    font-weight: 600;       /* 字体加粗 */
+    color: #FF8C00;           /* 标题颜色 (可以根据您的主题调整) */
+    margin-bottom: 30px;  /* 标题与下方按钮组的距离 */
+    
+    /* 移除 h3 默认的边框，如果您不想要的话 */
+    border-bottom: none; 
+    
+}
+
+
+
+/* 调整按钮组的上边距，因为它现在有标题了 */
+.feature-nav {
+    margin-top: 0; /* 移除原来的上边距 */
+}
